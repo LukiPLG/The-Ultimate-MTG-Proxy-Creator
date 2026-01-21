@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests, time, math, threading, json, os
 
 
-
 def parse_card(card):
     cards = []
 

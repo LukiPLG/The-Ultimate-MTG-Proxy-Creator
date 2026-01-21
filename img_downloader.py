@@ -1,7 +1,6 @@
 import time, threading, json, requests, os, re
 
 
-
 def download_img(start, end, step, data):
     startTime = time.time()
     session = requests.Session()

@@ -2,7 +2,6 @@ from PIL import Image, ImageDraw, ImageOps
 import math, time
 
 
-
 def mm_to_px(mm, dpi):
     return int(mm * dpi / 25.4)
 

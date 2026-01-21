@@ -1,7 +1,6 @@
 import json, os, time
 
 
-
 def deckList(addBack, addTransforms, deckname, cards_per_page, cards):
     if addTransforms == True:
         with open("MTG-Card-Data.jsonl", "r", encoding="utf-8") as data:

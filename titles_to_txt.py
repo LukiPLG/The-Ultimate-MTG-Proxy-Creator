@@ -1,7 +1,6 @@
 import json
 
 
-
 def titlesToTxt():
     with open("MTG-Card-Data.jsonl", "r", encoding="utf-8") as source:
         lines = source.readlines()
