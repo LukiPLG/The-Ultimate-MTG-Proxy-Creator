@@ -19,7 +19,6 @@ def titlesToTxt():
     return titles
 
 
-
 if __name__ == "__main__":
     titles = titlesToTxt()
     for title in titles:
