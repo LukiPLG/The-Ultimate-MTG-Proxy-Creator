@@ -1,8 +1,11 @@
 from PIL import Image, ImageDraw, ImageOps
 import math, time
 
+
+
 def mm_to_px(mm, dpi):
     return int(mm * dpi / 25.4)
+
 
 def images_to_pdf_grid( image_paths, output_pdf, page_size_mm, rows, cols, card_size_mm, offset_mm, bleed_mm, dpi, draw_cut_lines):
 
