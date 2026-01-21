@@ -8,7 +8,6 @@ def mm_to_px(mm, dpi):
 
 
 def images_to_pdf_grid( image_paths, output_pdf, page_size_mm, rows, cols, card_size_mm, offset_mm, bleed_mm, dpi, draw_cut_lines):
-
     page_w, page_h = map(lambda x: mm_to_px(x, dpi), page_size_mm)
     card_w, card_h = map(lambda x: mm_to_px(x, dpi), card_size_mm)
     offset_x, offset_y = map(lambda x: mm_to_px(x, dpi), offset_mm)
