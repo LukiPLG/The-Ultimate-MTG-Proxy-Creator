@@ -78,7 +78,7 @@ if __name__ == "__main__":
     startTime = time.time()
     print("Preparing card data...")
 
-    file = "CustomDeckDoPrintu - Copy.txt"
+    file = "CustomDeckDoPrintu.txt"
     with open("decks/" + file, "r", encoding="utf-8") as file:
         content = file.readlines()
 
