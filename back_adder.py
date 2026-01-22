@@ -43,7 +43,7 @@ def deckList(addBack, addTransforms, deckname, cards_per_page, cards):
                 counter = counter + count
 
             for i in range(9 - counter):
-                output = f"1 Blank\n"
+                output = f"1 Blank 0\n"
                 deck.write(output)
 
             for i in range(counter):
@@ -97,7 +97,7 @@ def deckList(addBack, addTransforms, deckname, cards_per_page, cards):
                 counter = counter + card[0]
 
             for i in range(9 - counter):
-                output = f"1 Blank\n"
+                output = f"1 Blank 0\n"
                 deck.write(output)
 
             for i in range(counter):
