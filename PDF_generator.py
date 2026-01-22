@@ -3,6 +3,12 @@ import math, time
 
 
 
+def resize_image(img, width, height):
+    if img.size[0] != width or img.size[1] != height:
+        img = img.resize((width, height), Image.LANCZOS)
+    return img
+
+
 def mm_to_px(mm, dpi):
     return int(mm * dpi / 25.4)
 
@@ -27,8 +33,12 @@ def images_to_pdf_grid( image_paths, output_pdf, page_size_mm, rows, cols, card_
         end = start + images_per_page
 
         for i, path in enumerate(image_paths[start:end]):
+            if path == "Blank":
+                continue
+
             try:
                 img = Image.open(path)
+                img = resize_image(img, card_w, card_h)
             except FileNotFoundError:
                 splited = path.split("_")
                 path = ""
@@ -37,10 +47,9 @@ def images_to_pdf_grid( image_paths, output_pdf, page_size_mm, rows, cols, card_
 
                 path = path + "0.png"
                 img = Image.open(path)
-
+                img = resize_image(img, card_w, card_h)
 
             img = img.convert("RGB")
-            img = ImageOps.fit(img, (full_w, full_h), method=Image.LANCZOS)
 
             row = i // cols
             col = i % cols
@@ -69,7 +78,7 @@ if __name__ == "__main__":
     startTime = time.time()
     print("Preparing card data...")
 
-    file = "CustomDeckDoPrintu.txt"
+    file = "CustomDeckDoPrintu - Copy.txt"
     with open("decks/" + file, "r", encoding="utf-8") as file:
         content = file.readlines()
 
@@ -84,7 +93,10 @@ if __name__ == "__main__":
             title = title + splited[i] + " "
         title = title + splited[len(splited) - 2]
 
-        filename = f"imgs/{title}_{index}.png"
+        if title == "Blank":
+            filename = "Blank"
+        else:
+            filename = f"imgs/{title}_{index}.png"
 
         imgs.append(filename)
 
@@ -96,7 +108,7 @@ if __name__ == "__main__":
         rows=3,
         cols=3,
         card_size_mm=(63, 88),
-        offset_mm=(10.5, 10.5),
+        offset_mm=(10.55, 15.5),
         bleed_mm=0,
         dpi=300,
         draw_cut_lines=True
