@@ -10,8 +10,20 @@ def download_img(start, end, step, data):
         card = json.loads(data[i])
         title = re.sub(r'[<>:"/\\|?*]', '_', card["title"])
 
+        if f"imgs/{title}_{j}.png" in os.listdir("imgs"):
+            duplicat = True
+        else:
+            duplicat = False
+
         for j in range(len(card["images"])):
-            filename = f"imgs/{title}_{j}.png"
+            if duplicat == False:
+                filename = f"imgs/{title}_{j}.png"
+            else:
+                counter = 1
+                while f"imgs/{title}_{j}.png" in os.listdir("imgs"):
+                    filename = f"imgs/{title}{counter}_{j}.png"
+                    counter = counter + 1
+
             url = card["images"][j]
 
             img_data = session.get(url, timeout=10)
