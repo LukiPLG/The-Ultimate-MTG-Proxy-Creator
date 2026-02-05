@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw, ImageOps
 import math, time
-
+from img_upscaler import upscaler
 
 
 def resize_image(img, width, height):
@@ -13,7 +13,7 @@ def mm_to_px(mm, dpi):
     return int(mm * dpi / 25.4)
 
 
-def images_to_pdf_grid( image_paths, output_pdf, page_size_mm, rows, cols, card_size_mm, offset_mm, bleed_mm, dpi, draw_cut_lines):
+def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_size_mm, offset_mm, bleed_mm, dpi, draw_cut_lines, upscale):
     page_w, page_h = map(lambda x: mm_to_px(x, dpi), page_size_mm)
     card_w, card_h = map(lambda x: mm_to_px(x, dpi), card_size_mm)
     offset_x, offset_y = map(lambda x: mm_to_px(x, dpi), offset_mm)
@@ -38,7 +38,6 @@ def images_to_pdf_grid( image_paths, output_pdf, page_size_mm, rows, cols, card_
 
             try:
                 img = Image.open(path)
-                img = resize_image(img, card_w, card_h)
             except FileNotFoundError:
                 splited = path.split("_")
                 path = ""
@@ -47,7 +46,12 @@ def images_to_pdf_grid( image_paths, output_pdf, page_size_mm, rows, cols, card_
 
                 path = path + "0.png"
                 img = Image.open(path)
-                img = resize_image(img, card_w, card_h)
+
+
+            if upscale == True:
+                img = upscaler(path)
+
+            img = resize_image(img, card_w, card_h)
 
             img = img.convert("RGB")
 
@@ -78,7 +82,7 @@ if __name__ == "__main__":
     startTime = time.time()
     print("Preparing card data...")
 
-    file = "CustomDeckDoPrintu.txt"
+    file = "CustomDeckDoPrintu - Copy.txt"
     with open("decks/" + file, "r", encoding="utf-8") as file:
         content = file.readlines()
 
@@ -111,7 +115,8 @@ if __name__ == "__main__":
         offset_mm=(10.55, 15.5),
         bleed_mm=0,
         dpi=300,
-        draw_cut_lines=True
+        draw_cut_lines=True,
+        upscale=False
     )
 
     endTime = time.time()
