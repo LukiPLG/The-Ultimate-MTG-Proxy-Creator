@@ -61,7 +61,7 @@ def scrape(id, start, end):
     startTime = time.time()
 
     for i in range(start, end):
-        url = f"https://scryfall.com/search?as=full&order=name&page={i+1}&q=%28game%3Apaper%29+unique%3Aprints+prefer%3Abest&unique=cards"
+        url = f"https://scryfall.com/search?as=full&order=name&page={i+1}&q=%28game%3Apaper%29+include%3Aextras+unique%3Aprints+prefer%3Abest&unique=cards"
         page = requests.get(url)
         soup = BeautifulSoup(page.text, "html.parser")
 
@@ -107,7 +107,7 @@ def merger(files_count):
 
 if __name__ == "__main__":
     THREADS = 24
-    cards_number = 92463
+    cards_number = 102639
     cards_per_page = 20
 
     print(f"Initializing code on {THREADS} threads...")
