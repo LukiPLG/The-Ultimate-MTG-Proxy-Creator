@@ -116,7 +116,7 @@ if __name__ == "__main__":
         bleed_mm=0,
         dpi=300,
         draw_cut_lines=True,
-        upscale=True
+        upscale=False
     )
 
     endTime = time.time()
