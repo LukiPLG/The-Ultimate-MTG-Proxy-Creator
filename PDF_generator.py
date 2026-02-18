@@ -82,7 +82,7 @@ if __name__ == "__main__":
     startTime = time.time()
     print("Preparing card data...")
 
-    file = "CustomDeckDoPrintu - Copy.txt"
+    file = "CustomDeckDoPrintu.txt"
     with open("decks/" + file, "r", encoding="utf-8") as file:
         content = file.readlines()
 
@@ -116,7 +116,7 @@ if __name__ == "__main__":
         bleed_mm=0,
         dpi=300,
         draw_cut_lines=True,
-        upscale=False
+        upscale=True
     )
 
     endTime = time.time()

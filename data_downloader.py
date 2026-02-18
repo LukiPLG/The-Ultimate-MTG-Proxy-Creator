@@ -107,7 +107,7 @@ def merger(files_count):
 
 if __name__ == "__main__":
     THREADS = 24
-    cards_number = 102639
+    cards_number = 102910
     cards_per_page = 20
 
     print(f"Initializing code on {THREADS} threads...")
