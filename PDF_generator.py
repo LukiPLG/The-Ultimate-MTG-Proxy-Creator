@@ -58,8 +58,8 @@ def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_s
             row = i // cols
             col = i % cols
 
-            x = offset_x + col * full_w
-            y = offset_y + row * full_h
+            x = offset_x + col * full_w + bleed
+            y = offset_y + row * full_h + bleed
 
             page.paste(img, (x, y))
 
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         cols=3,
         card_size_mm=(63, 88),
         offset_mm=(10.55, 15.5),
-        bleed_mm=0,
+        bleed_mm=0.5,
         dpi=300,
         draw_cut_lines=True,
         upscale=False
