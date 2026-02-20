@@ -34,7 +34,7 @@ def parse_card(card):
     }
     cards.append(front_card)
 
-    if len(titles) > 1:
+    if len(titles) > 1 and back_image != None:
         front_card["transform"] = titles[1].get_text(strip=True)
 
         back_card = {
