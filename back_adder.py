@@ -76,7 +76,7 @@ def deckList(addBack, addTransforms, deckname, cards_per_page, cards):
 
                     if card[3] != None:
                         for i in range(counter, counter + cards_on_current_page):
-                            backList[i] = card[3]
+                            backList[-i] = card[3]
 
                     for back in backList:
                         output = f"1 {back} 0\n"
@@ -92,7 +92,7 @@ def deckList(addBack, addTransforms, deckname, cards_per_page, cards):
 
                 if card[3] != None:
                     for i in range(counter, counter + card[0]):
-                        backList[i] = card[3]
+                        backList[-i] = card[3]
 
                 counter = counter + card[0]
 
@@ -101,7 +101,7 @@ def deckList(addBack, addTransforms, deckname, cards_per_page, cards):
                 deck.write(output)
 
             for i in range(counter):
-                output = f"1 {backList[i]} {card[2]}\n"
+                output = f"1 {backList[-i]} {card[2]}\n"
                 deck.write(output)
 
 
