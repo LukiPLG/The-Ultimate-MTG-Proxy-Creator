@@ -114,9 +114,9 @@ if __name__ == "__main__":
         card_size_mm=(63, 88),
         offset_mm=(10.55, 15.5),
         bleed_mm=0.5,
-        dpi=900,
+        dpi=300,
         draw_cut_lines=True,
-        upscale=True
+        upscale=False
     )
 
     endTime = time.time()
