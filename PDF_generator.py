@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw, ImageOps
 import math, time
-from img_upscaler import upscaler
+#from img_upscaler import upscaler
 
 
 def resize_image(img, width, height):
@@ -16,7 +16,6 @@ def mm_to_px(mm, dpi):
 def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_size_mm, offset_mm, bleed_mm, dpi, draw_cut_lines, upscale):
     page_w, page_h = map(lambda x: mm_to_px(x, dpi), page_size_mm)
     card_w, card_h = map(lambda x: mm_to_px(x, dpi), card_size_mm)
-    offset_x, offset_y = map(lambda x: mm_to_px(x, dpi), offset_mm)
     bleed = mm_to_px(bleed_mm, dpi)
 
     full_w = card_w + 2 * bleed
@@ -24,8 +23,20 @@ def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_s
 
     images_per_page = rows * cols
 
+    original_offset_mm = offset_mm
+
     pages = []
     for page_idx in range(math.ceil(len(image_paths) / images_per_page)):
+        if page_idx % 2 == 1:
+            offset_mm[0] = page_size_mm[0] - (rows * card_size_mm[0]) - (rows * 2 * bleed_mm) - original_offset_mm[0]
+            offset_mm[1] = page_size_mm[1] - (cols * card_size_mm[1]) - (cols * 2 * bleed_mm) - original_offset_mm[0]
+        else:
+            offset_mm[0] = original_offset_mm[0]
+            offset_mm[1] = original_offset_mm[1]
+
+        offset_x, offset_y = map(lambda x: mm_to_px(x, dpi), offset_mm)
+
+
         page = Image.new("RGB", (page_w, page_h), "white")
         draw = ImageDraw.Draw(page)
 
@@ -48,8 +59,8 @@ def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_s
                 img = Image.open(path)
 
 
-            if upscale == True:
-                img = upscaler(path)
+            # if upscale == True:
+            #     img = upscaler(path)
 
             img = resize_image(img, card_w, card_h)
 
@@ -108,11 +119,11 @@ if __name__ == "__main__":
     images_to_pdf_grid(
         image_paths=imgs,
         output_pdf="deck_ready_to_be_printed.pdf",
-        page_size_mm=(210, 297),
+        page_size_mm=[210, 297],
         rows=3,
         cols=3,
-        card_size_mm=(63, 88),
-        offset_mm=(10.55, 15.5),
+        card_size_mm=[63, 88],
+        offset_mm=[10.55, 15.5],
         bleed_mm=0.5,
         dpi=300,
         draw_cut_lines=True,
