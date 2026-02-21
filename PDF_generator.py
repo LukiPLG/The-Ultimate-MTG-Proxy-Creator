@@ -29,7 +29,7 @@ def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_s
     for page_idx in range(math.ceil(len(image_paths) / images_per_page)):
         if page_idx % 2 == 1:
             offset_mm[0] = page_size_mm[0] - (rows * card_size_mm[0]) - (rows * 2 * bleed_mm) - original_offset_mm[0]
-            offset_mm[1] = page_size_mm[1] - (cols * card_size_mm[1]) - (cols * 2 * bleed_mm) - original_offset_mm[0]
+            offset_mm[1] = page_size_mm[1] - (cols * card_size_mm[1]) - (cols * 2 * bleed_mm) - original_offset_mm[1]
         else:
             offset_mm[0] = original_offset_mm[0]
             offset_mm[1] = original_offset_mm[1]
