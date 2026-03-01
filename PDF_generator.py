@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw, ImageOps
 import math, time
-#from img_upscaler import upscaler
+from img_upscaler import upscaler
 
 
 def resize_image(img, width, height):
@@ -12,8 +12,11 @@ def resize_image(img, width, height):
 def mm_to_px(mm, dpi):
     return int(mm * dpi / 25.4)
 
+def px_to_mm(px, dpi):
+    return px * 25.4 / dpi
 
-def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_size_mm, offset_mm, bleed_mm, dpi, draw_cut_lines, upscale):
+
+def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_size_mm, offset_mm, bleed_mm, line_width, line_color, dpi, draw_cut_lines, upscale):
     page_w, page_h = map(lambda x: mm_to_px(x, dpi), page_size_mm)
     card_w, card_h = map(lambda x: mm_to_px(x, dpi), card_size_mm)
     bleed = mm_to_px(bleed_mm, dpi)
@@ -23,19 +26,19 @@ def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_s
 
     images_per_page = rows * cols
 
-    original_offset_mm = offset_mm
+    original_offset_mm = offset_mm[0]
+    alt_offset_mm = (page_size_mm[0] - (cols * card_size_mm[0]) - (cols * 2 * bleed_mm) - offset_mm[0] + (px_to_mm(cols+1, dpi)))
+    offset_mm[0] = alt_offset_mm
 
     pages = []
     for page_idx in range(math.ceil(len(image_paths) / images_per_page)):
-        if page_idx % 2 == 1:
-            offset_mm[0] = page_size_mm[0] - (rows * card_size_mm[0]) - (rows * 2 * bleed_mm) - original_offset_mm[0]
-            offset_mm[1] = page_size_mm[1] - (cols * card_size_mm[1]) - (cols * 2 * bleed_mm) - original_offset_mm[1]
+        if offset_mm[0] == alt_offset_mm:
+            offset_mm[0] = original_offset_mm
         else:
-            offset_mm[0] = original_offset_mm[0]
-            offset_mm[1] = original_offset_mm[1]
+            offset_mm[0] = alt_offset_mm
+        #print(offset_mm)
 
         offset_x, offset_y = map(lambda x: mm_to_px(x, dpi), offset_mm)
-
 
         page = Image.new("RGB", (page_w, page_h), "white")
         draw = ImageDraw.Draw(page)
@@ -59,8 +62,8 @@ def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_s
                 img = Image.open(path)
 
 
-            # if upscale == True:
-            #     img = upscaler(path)
+            if upscale == True:
+                img = upscaler(path)
 
             img = resize_image(img, card_w, card_h)
 
@@ -77,11 +80,11 @@ def images_to_pdf_grid(image_paths, output_pdf, page_size_mm, rows, cols, card_s
         if draw_cut_lines:
             for c in range(cols + 1):
                 x = offset_x + c * full_w
-                draw.line([(x, 0), (x, page_h)], fill="black", width=1)
+                draw.line([(x, 0), (x, page_h)], fill=line_color, width=mm_to_px(2*bleed_mm, dpi))
 
             for r in range(rows + 1):
                 y = offset_y + r * full_h
-                draw.line([(0, y), (page_w, y)], fill="black", width=1)
+                draw.line([(0, y), (page_w, y)], fill=line_color, width=mm_to_px(2*bleed_mm, dpi))
 
         pages.append(page)
 
@@ -125,9 +128,11 @@ if __name__ == "__main__":
         card_size_mm=[63, 88],
         offset_mm=[10.55, 15.5],
         bleed_mm=0.5,
-        dpi=300,
+        line_width=1,
+        line_color="#120E03",
+        dpi=900,
         draw_cut_lines=True,
-        upscale=False
+        upscale=True
     )
 
     endTime = time.time()
