@@ -104,6 +104,7 @@ def merger(files_count):
     print(f"Merging is complete!")
 
 
+
 if __name__ == "__main__":
     THREADS = 24
     cards_number = 102910
