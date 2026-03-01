@@ -34,7 +34,7 @@ def parse_card(card):
     }
     cards.append(front_card)
 
-    if len(titles) > 1:
+    if len(titles) > 1 and back_image != None:
         front_card["transform"] = titles[1].get_text(strip=True)
 
         back_card = {
@@ -61,7 +61,7 @@ def scrape(id, start, end):
     startTime = time.time()
 
     for i in range(start, end):
-        url = f"https://scryfall.com/search?as=full&order=name&page={i+1}&q=%28game%3Apaper%29+unique%3Aprints+prefer%3Abest&unique=cards"
+        url = f"https://scryfall.com/search?as=full&order=name&page={i+1}&q=%28game%3Apaper%29+include%3Aextras+unique%3Aprints+prefer%3Abest&unique=cards"
         page = requests.get(url)
         soup = BeautifulSoup(page.text, "html.parser")
 
@@ -106,8 +106,8 @@ def merger(files_count):
 
 
 if __name__ == "__main__":
-    THREADS = 12
-    cards_number = 92463
+    THREADS = 24
+    cards_number = 102910
     cards_per_page = 20
 
     print(f"Initializing code on {THREADS} threads...")
